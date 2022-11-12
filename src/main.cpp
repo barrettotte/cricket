@@ -6,40 +6,51 @@
 #include <ESPAsyncWebServer.h>
 #include <LittleFS.h>
 
-#include "secrets.h"
+#include "config.h"
 
-#define DHT_TYPE DHT11
-#define DHT_PIN 5 // D1
-#define RDY_PIN 4 // D2
-#define SERVER_PORT 80
-
-unsigned long prevMs = 0;
-const long interval = 15000; // 15s
-
+unsigned long prevReadMs = 0;
 float temperature = 0.0;
 float humidity = 0.0;
 
-AsyncWebServer server(SERVER_PORT);
+AsyncWebServer server(HTTP_PORT);
 DHT dht(DHT_PIN, DHT_TYPE);
 // NOTE: DHT can't be read in async server methods.
-//   DHT uses yield() which panics when in server method.
+//   DHT uses yield() which panics when in async handler.
 
-void updateTemperature() {
-    float t = dht.readTemperature(true); // true => as fahrenheit
-    if (isnan(t)) {
-        Serial.println("Failed to read temperature.");
-        t = 0.0;
+bool getSensorData(float (*readFn)(), float* val) {
+    for (uint8_t i = 0; i < READ_RETRY; i++) {
+        *val = readFn();
+        if (!isnan(*val)) {
+            return true;
+        }
     }
-    temperature = t;
+    return false;
 }
 
-void updateHumidity() {
-    float h = dht.readHumidity();
-    if (isnan(h)) {
-        Serial.println("Failed to read humidity.");
-        h = 0.0;
+float readTemperature() {
+    bool ok = getSensorData([]{return dht.readTemperature(true);}, &temperature);
+    if (!ok) {
+        Serial.println("Failed to read temperature.");
     }
-    humidity = h;
+    return temperature;
+}
+
+float readHumidity() {
+    bool ok = getSensorData([]{return dht.readHumidity();}, &humidity);
+    if (!ok) {
+        Serial.println("Failed to read humidity.");
+    }
+    return humidity;
+}
+
+void readSensors() {
+    unsigned long currentMs = millis();
+    if (currentMs - prevReadMs >= READ_INTERVAL_MS) {
+        prevReadMs = currentMs;
+        readTemperature();
+        readHumidity();
+        Serial.printf("Temperature=%f,Humidity=%f\n", temperature, humidity);
+    }
 }
 
 String valueInjector(const String& target) {
@@ -53,22 +64,44 @@ String valueInjector(const String& target) {
     }
 }
 
+String getSensorJson() {
+    char json[128];
+    snprintf(json, 128, "{\"temperature\":%.3f,\"humidity\":%.3f}", temperature, humidity);
+    return String(json);
+}
+
+void handlePrometheusRequest(AsyncWebServerRequest* req) {
+    if (isnan(temperature) || isnan(humidity)) {
+        req->send_P(500, "text/plain; charset=utf-8", "Sensor data error.");
+    } else {
+        char resp[1024];
+        snprintf(resp, 1024, PROMETHEUS_TEMPLATE, temperature, humidity);
+        req->send(200, "text/plain; charset=utf-8", resp);
+    }
+}
+
 void initServer() {
-    server.on("/", HTTP_GET, [](AsyncWebServerRequest *req) {
+    server.onNotFound([](AsyncWebServerRequest* req) {
+        req->send_P(404, "text/plain; charset=utf-8", "Page not found.");
+    });
+    server.on("/temperature", HTTP_GET, [](AsyncWebServerRequest* req) {
+        req->send_P(200, "text/plain; charset=utf-8", String(temperature).c_str());
+    });
+    server.on("/humidity", HTTP_GET, [](AsyncWebServerRequest* req) {
+        req->send_P(200, "text/plain; charset=utf-8", String(humidity).c_str());
+    });
+    server.on("/sensors", HTTP_GET, [](AsyncWebServerRequest* req) {
+        req->send_P(200, "application/json; charset=utf-8", getSensorJson().c_str());
+    });
+    server.on("/", HTTP_GET, [](AsyncWebServerRequest* req) {
         req->send(LittleFS, "/index.html", String(), false, valueInjector);
     });
-    server.on("/styles.css", HTTP_GET, [](AsyncWebServerRequest *req) {
+    server.on("/styles.css", HTTP_GET, [](AsyncWebServerRequest* req) {
         req->send(LittleFS, "/styles.css", "text/css");
     });
-    server.on("/temperature", HTTP_GET, [](AsyncWebServerRequest *req) {
-        req->send_P(200, "text/plain", String(temperature).c_str());
-    });
-    server.on("/humidity", HTTP_GET, [](AsyncWebServerRequest *req) {
-        req->send_P(200, "text/plain", String(humidity).c_str());
-    });
-    // TODO: /log
+    server.on(PROMETHEUS_ENDPOINT, HTTP_GET, handlePrometheusRequest);
     server.begin();
-    printf("Server listening on port %d...\n", SERVER_PORT);
+    Serial.printf("Server listening on port %d...\n", HTTP_PORT);
 }
 
 void initWifi() {
@@ -105,19 +138,12 @@ void setup() {
 
     if (!LittleFS.begin()) {
         Serial.println("Error occurred while mounting LittleFS.");
-        return;
+        while (1) {}
     }
     initServer();
     digitalWrite(RDY_PIN, HIGH);
 }
 
 void loop() {
-    unsigned long currentMs = millis();
-
-    if (currentMs - prevMs >= interval) {
-        prevMs = currentMs;
-        updateTemperature();
-        updateHumidity();
-        Serial.printf("Temperature=%f,Humidity=%f\n", temperature, humidity);
-    }
+    readSensors();
 }

@@ -6,6 +6,10 @@ Humidity/temperature sensor metrics in Grafana via Prometheus.
 
 TODO:
 
+## Infra
+
+TODO:
+
 ## BOM
 
 - 1x ESP8266
@@ -15,5 +19,10 @@ TODO:
 ## References
 
 - https://docs.platformio.org/en/latest/core/installation/
-- https://randomnerdtutorials.com/esp8266-web-server-spiffs-nodemcu/
-- https://randomnerdtutorials.com/esp8266-nodemcu-vs-code-platformio-littlefs/
+- ESP8266
+  - https://randomnerdtutorials.com/esp8266-web-server-spiffs-nodemcu/
+  - https://randomnerdtutorials.com/esp8266-nodemcu-vs-code-platformio-littlefs/
+- Prometheus/Grafana
+  - https://dzlab.github.io/monitoring/2021/12/30/monitoring-stack-docker/
+  - https://github.com/grafana/prometheus-arduino
+  - https://github.com/prometheus/docs/blob/main/content/docs/instrumenting/exposition_formats.md
