@@ -18,7 +18,6 @@ TODO:
 
 ## References
 
-- https://docs.platformio.org/en/latest/core/installation/
 - ESP8266
   - https://randomnerdtutorials.com/esp8266-web-server-spiffs-nodemcu/
   - https://randomnerdtutorials.com/esp8266-nodemcu-vs-code-platformio-littlefs/
@@ -26,3 +25,5 @@ TODO:
   - https://dzlab.github.io/monitoring/2021/12/30/monitoring-stack-docker/
   - https://github.com/grafana/prometheus-arduino ... note: does not support ESP8266
   - https://github.com/prometheus/docs/blob/main/content/docs/instrumenting/exposition_formats.md
+- https://github.com/benjojo/alertmanager-discord
+- https://docs.platformio.org/en/latest/core/installation/

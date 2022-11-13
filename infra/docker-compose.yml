@@ -33,6 +33,21 @@ services:
     networks:
       - cricket
   
+  alertmanager:
+    image: prom/alertmanager
+    container_name: alertmanager
+    restart: unless-stopped
+    command: 
+      - '--config.file=/config/alertmanager.yml'
+      - '--cluster.advertise-address=0.0.0.0:9093'
+    ports:
+      - "9093-9093"
+    volumes:
+      - ./alertmanager:/config
+      - alertmanager_data:/data
+    networks:
+      - cricket
+  
   grafana:
     image: grafana/grafana
     container_name: grafana
@@ -49,10 +64,20 @@ services:
     networks:
       - cricket
 
+  discord-alerts:
+    image: benjojo/alertmanager-discord
+    container_name: discord-alerts
+    restart: unless-stopped
+    environment:
+      - DISCORD_WEBHOOK=${DISCORD_WEBHOOK_URL}
+    networks:
+      - cricket
+
 networks:
   cricket:
     driver: bridge
 
 volumes:
+  alertmanager_data: {}
   grafana_data: {}
   prometheus_data: {}
