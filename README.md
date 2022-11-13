@@ -1,6 +1,6 @@
 # cricket
 
-Humidity/temperature sensor metrics in Grafana via Prometheus.
+Humidity/temperature sensor metrics in Grafana and Prometheus with Discord alerting.
 
 ## Summary
 
@@ -14,7 +14,8 @@ TODO:
 
 - 1x ESP8266
 - 1x DHT11 Temperature Humidity Sensor Module
-
+- 1x Red LED
+- 1x 470Ω resistor
 
 ## References
 
