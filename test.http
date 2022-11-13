@@ -12,3 +12,6 @@ GET http://{{cricket}}/humidity HTTP/1.1
 ### Get all sensor data
 GET http://{{cricket}}/sensors HTTP/1.1
 Accept: application/json
+
+### Get Prometheus metrics
+GET http://{{cricket}}/metrics HTTP/1.1

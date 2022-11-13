@@ -1,0 +1,21 @@
+groups:
+  - name: alert_rules
+    interval: 1m
+    rules:
+      - alert: container_down
+        expr: time() - container_last_seen{name="grafana"} > 15
+        for: 1m
+        # havent seen container for over 15 seconds and this has been true for one minute
+        labels:
+          severity: critical
+        annotations:
+          summary: Container "{{ $labels.name }}" is not running
+          description: 'Container "{{ $labels.name }}" has been down for more than {{ $value | printf "%.0f" }} second(s)'
+      - alert: too_hot
+        expr: cricket_temperature_fahrenheit{app="cricket"} > 80.0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: Too Hot
+          description: I'm being cooked alive in here!

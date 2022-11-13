@@ -14,11 +14,11 @@
 #define PROMETHEUS_NAMESPACE "cricket"
 
 char const* PROMETHEUS_TEMPLATE = 
-    "# HELP " PROMETHEUS_NAMESPACE "_temperature_fahrenheit Temperature.\n"
+    "# HELP " PROMETHEUS_NAMESPACE "_temperature_fahrenheit Temperature\n"
     "# TYPE " PROMETHEUS_NAMESPACE "_temperature_fahrenheit gauge\n"
     "# UNIT " PROMETHEUS_NAMESPACE "_temperature_fahrenheit \u00B0F\n"
-    PROMETHEUS_NAMESPACE "_temperature_fahrenheit %f\n"
-    "# HELP " PROMETHEUS_NAMESPACE "_humidity_percent Humidity.\n"
+    PROMETHEUS_NAMESPACE "_temperature_fahrenheit{app=\"cricket\"} %f\n\n"
+    "# HELP " PROMETHEUS_NAMESPACE "_humidity_percent Humidity\n"
     "# TYPE " PROMETHEUS_NAMESPACE "_humidity_percent gauge\n"
     "# UNIT " PROMETHEUS_NAMESPACE "_humidity_percent %%\n"
-    PROMETHEUS_NAMESPACE "_humidity_percent %f\n";
+    PROMETHEUS_NAMESPACE "_humidity_percent{app=\"cricket\"} %f\n";

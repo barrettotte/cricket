@@ -24,5 +24,5 @@ TODO:
   - https://randomnerdtutorials.com/esp8266-nodemcu-vs-code-platformio-littlefs/
 - Prometheus/Grafana
   - https://dzlab.github.io/monitoring/2021/12/30/monitoring-stack-docker/
-  - https://github.com/grafana/prometheus-arduino
+  - https://github.com/grafana/prometheus-arduino ... note: does not support ESP8266
   - https://github.com/prometheus/docs/blob/main/content/docs/instrumenting/exposition_formats.md

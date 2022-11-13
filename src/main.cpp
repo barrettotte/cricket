@@ -43,13 +43,19 @@ float readHumidity() {
     return humidity;
 }
 
+String getSensorJson() {
+    char json[128];
+    snprintf(json, 128, "{\"temperature\":%f,\"humidity\":%f}", temperature, humidity);
+    return String(json);
+}
+
 void readSensors() {
     unsigned long currentMs = millis();
     if (currentMs - prevReadMs >= READ_INTERVAL_MS) {
         prevReadMs = currentMs;
         readTemperature();
         readHumidity();
-        Serial.printf("Temperature=%f,Humidity=%f\n", temperature, humidity);
+        Serial.println(getSensorJson());
     }
 }
 
@@ -62,12 +68,6 @@ String valueInjector(const String& target) {
         Serial.printf("Invalid target. %s\n", target.c_str());
         return String("???");
     }
-}
-
-String getSensorJson() {
-    char json[128];
-    snprintf(json, 128, "{\"temperature\":%.3f,\"humidity\":%.3f}", temperature, humidity);
-    return String(json);
 }
 
 void handlePrometheusRequest(AsyncWebServerRequest* req) {
@@ -107,7 +107,7 @@ void initServer() {
 void initWifi() {
     WiFi.mode(WIFI_STA);
     WiFi.begin(_WIFI_SSID, _WIFI_PASS);
-    Serial.printf("Connecting to WiFi");
+    Serial.printf("Connecting to WiFi [%s]", _WIFI_SSID);
 
     while (WiFi.status() != WL_CONNECTED) {
         delay(1000);
