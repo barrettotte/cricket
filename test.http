@@ -1,4 +1,7 @@
-@cricket = 192.168.1.78
+# test hitting ESP8266 web server
+
+# @cricket = 192.168.1.78
+@cricket = localhost:1337
 
 ### Hit homepage
 GET http://{{cricket}}/ HTTP/1.1
@@ -15,3 +18,6 @@ Accept: application/json
 
 ### Get Prometheus metrics
 GET http://{{cricket}}/metrics HTTP/1.1
+
+### Send invalid path
+GET http://{{cricket}}/invalid HTTP/1.1

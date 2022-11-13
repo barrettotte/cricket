@@ -10,7 +10,7 @@ TODO:
 
 TODO:
 
-## BOM
+## Hardware
 
 - 1x ESP8266
 - 1x DHT11 Temperature Humidity Sensor Module

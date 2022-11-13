@@ -11,14 +11,13 @@
 
 #define HTTP_PORT 80
 #define PROMETHEUS_ENDPOINT "/metrics"
-#define PROMETHEUS_NAMESPACE "cricket"
 
 char const* PROMETHEUS_TEMPLATE = 
-    "# HELP " PROMETHEUS_NAMESPACE "_temperature_fahrenheit Temperature\n"
-    "# TYPE " PROMETHEUS_NAMESPACE "_temperature_fahrenheit gauge\n"
-    "# UNIT " PROMETHEUS_NAMESPACE "_temperature_fahrenheit \u00B0F\n"
-    PROMETHEUS_NAMESPACE "_temperature_fahrenheit{app=\"cricket\"} %f\n\n"
-    "# HELP " PROMETHEUS_NAMESPACE "_humidity_percent Humidity\n"
-    "# TYPE " PROMETHEUS_NAMESPACE "_humidity_percent gauge\n"
-    "# UNIT " PROMETHEUS_NAMESPACE "_humidity_percent %%\n"
-    PROMETHEUS_NAMESPACE "_humidity_percent{app=\"cricket\"} %f\n";
+    "# HELP cricket_temperature_fahrenheit Temperature\n"
+    "# TYPE cricket_temperature_fahrenheit gauge\n"
+    "# UNIT cricket_temperature_fahrenheit \u00B0F\n"
+    "cricket_temperature_fahrenheit{app=\"cricket\"} %f\n\n"
+    "# HELP cricket_humidity_percent Humidity\n"
+    "# TYPE cricket_humidity_percent gauge\n"
+    "# UNIT cricket_humidity_percent %%\n"
+    "cricket_humidity_percent{app=\"cricket\"} %f\n";
