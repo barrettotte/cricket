@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta http-equiv="refresh" content="30">
   <title>Cricket</title>
   <link rel="stylesheet" href="styles.css"/>
 </head>
@@ -23,27 +22,17 @@
     </p>
   </div>
 </body>
-
 <script>
   setInterval(() => {
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = () => {
       if (this.readyState == 4 && this.status == 200) {
-        document.getElementById("temperature").innerHTML = this.responseText;
+        const sensors = JSON.parse(this.responseText);
+        document.getElementById('temperature').innerHTML = sensors['temperature'];
+        document.getElementById('humidity').innerHTML = sensors['humidity'];
       }
     };
-    xhttp.open("GET", "/temperature", true);
-    xhttp.send();
-  }, 10000);
-
-  setInterval(() => {
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = () => {
-      if (this.readyState == 4 && this.status == 200) {
-        document.getElementById("humidity").innerHTML = this.responseText;
-      }
-    };
-    xhttp.open("GET", "/humidity", true);
+    xhttp.open("GET", "/sensors", true);
     xhttp.send();
   }, 10000);
 </script>
