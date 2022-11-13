@@ -27,7 +27,7 @@ services:
       - '--config.file=/config/alertmanager.yml'
       - '--cluster.advertise-address=0.0.0.0:9093'
     ports:
-      - "9093-9093"
+      - "9093:9093"
     volumes:
       - ./alertmanager:/config
       - alertmanager_data:/data

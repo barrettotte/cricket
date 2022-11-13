@@ -8,7 +8,11 @@ TODO:
 
 ## Infra
 
-TODO:
+- `nginx` - Reverse proxy to local IP of ESP8266
+- `prometheus` - Metric store for temperature/humidity data 
+- `grafana` - Humidity/temperature dashboards over Prometheus
+- `alertmanager` - Manages alert firing
+- `discord-alerts` - Send alerts to Discord Web Hook
 
 ## Hardware
 
@@ -28,3 +32,4 @@ TODO:
   - https://github.com/prometheus/docs/blob/main/content/docs/instrumenting/exposition_formats.md
 - https://github.com/benjojo/alertmanager-discord
 - https://docs.platformio.org/en/latest/core/installation/
+- https://diarmuid.ie/blog/using-nginx-as-a-reverse-proxy-for-developing-microservice-with-docker-compose

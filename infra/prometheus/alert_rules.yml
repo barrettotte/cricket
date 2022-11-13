@@ -3,13 +3,13 @@ groups:
     interval: 30s
     rules:
       - alert: too_hot
-        expr: cricket_temperature_fahrenheit{app="cricket"} > 75.0
+        expr: cricket_temperature_fahrenheit{app="cricket"} > 80.0
         for: 1m
         labels:
           severity: critical
         annotations:
           summary: I'm being cooked alive in here!
-          description: 'Temperature threshold {{ $value | printf "%.0f" }}°F hit for over one minute.'
+          description: 'Temperature threshold hit for over one minute. Currently at {{ $value | printf "%.0f" }}°F'
 
       - alert: sensor_failure
         expr: |
