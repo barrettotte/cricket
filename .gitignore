@@ -3,3 +3,5 @@
 
 include/secrets.h
 infra/.env
+
+cad/*.gcode
