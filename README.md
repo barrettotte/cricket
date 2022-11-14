@@ -6,20 +6,20 @@ Temperature/Humidity sensor metrics in Prometheus with Discord alerting and Graf
 
 Prometheus pulls metric data from an ESP8266 with a temperature/humidity sensor.
 
-<img src="docs/images/assembled.jpg" width="75%" height="75%"/>
+<img src="docs/images/assembled.jpg" width="30%" height="30%"/>
 
 After loading metrics into Prometheus, Grafana is used to build dashboards.
 
-<img src="docs/images/grafana.png" width="75%" height="75%"/>
+<img src="docs/images/grafana.PNG" width="75%" height="75%"/>
 
 Alerts are triggered based on configured rules in Prometheus. AlertManager sends alerts to Discord via web hooks.
 
-<img src="docs/images/discord-alert.png" width="50%" height="50%"/>
+<img src="docs/images/discord-alert.PNG" width="40%" height="40%"/>
 
 The ESP8266 also hosts a small web server with a homepage to display the current sensor data.
 See all endpoints in [test.http](test.http).
 
-<img src="docs/images/index.jpg" width="75%" height="75%"/>
+<img src="docs/images/index.jpg" width="40%" height="40%"/>
 
 ## Containers
 
@@ -48,8 +48,8 @@ I decided to learn a little [Fritzing](https://fritzing.org/) for this project, 
 Note that the temperature/humidity sensor below isn't correct, but the DHT11 has the same pinout.
 
 <img src="docs/images/breadboard.png" width="50%" height="50%"/>
-<img src="docs/images/schematic.png" width="50%" height="50%"/>
-<img src="docs/images/protoboard.jpg" width="50%" height="50%"/>
+<img src="docs/images/schematic.png" width="40%" height="40%"/>
+<img src="docs/images/protoboard.jpg" width="40%" height="40%"/>
 
 ## Build/Run
 
