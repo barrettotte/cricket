@@ -4,16 +4,24 @@ Temperature/Humidity sensor metrics in Prometheus with Discord alerting and Graf
 
 ## Summary
 
-TODO:
+Prometheus pulls metric data from an ESP8266 with a temperature/humidity sensor.
 
-## Hardware
+<img src="docs/images/assembled.jpg" width="75%" height="75%"/>
 
-- 1x ESP8266
-- 1x DHT11 Temperature Humidity Sensor Module
-- 1x Red LED
-- 1x 470Ω resistor
+After loading metrics into Prometheus, Grafana is used to build dashboards.
 
-## Infra
+<img src="docs/images/grafana.png" width="75%" height="75%"/>
+
+Alerts are triggered based on configured rules in Prometheus. AlertManager sends alerts to Discord via web hooks.
+
+<img src="docs/images/discord-alert.png" width="50%" height="50%"/>
+
+The ESP8266 also hosts a small web server with a homepage to display the current sensor data.
+See all endpoints in [test.http](test.http).
+
+<img src="docs/images/index.jpg" width="75%" height="75%"/>
+
+## Containers
 
 - `nginx` - Reverse proxy to local IP of ESP8266
 - `prometheus` - Metric store for temperature/humidity data 
@@ -21,6 +29,32 @@ TODO:
 - `alertmanager` - Manages alert notification for alerts firing in Prometheus
 - `discord-alerts` - Send alerts to Discord Web Hook
 - `cadvisor` - Provide metrics about cgroups
+
+## Hardware
+
+- 1x ESP8266
+- 1x DHT11 Temperature Humidity Sensor Module
+- 1x Red LED
+- 1x 470Ω resistor
+- 1x Protoboard
+- 4x M2x8mm hex socket screws
+
+I also threw together a basic enclosure in [cad/](cad/). 
+It sucks, but its good enough for now.
+
+## Circuit
+
+I decided to learn a little [Fritzing](https://fritzing.org/) for this project, seems pretty cool.
+Note that the temperature/humidity sensor below isn't correct, but the DHT11 has the same pinout.
+
+<img src="docs/images/breadboard.png" width="50%" height="50%"/>
+<img src="docs/images/schematic.png" width="50%" height="50%"/>
+<img src="docs/images/protoboard.jpg" width="50%" height="50%"/>
+
+## Build/Run
+
+- Upload firmware to ESP8266 - `make upload`
+- Spin up infrastructure - `infra/start.sh`
 
 ## References
 
